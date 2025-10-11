@@ -42,3 +42,4 @@ next-env.d.ts
 
 python/UserImages
 python/encodings.pkl
+public/detections

@@ -1,6 +1,6 @@
-import dbConfig from "@/middlewares/db.config";
+import dbConfig from "@/config/db.config";
 import User from "@/models/User";
-import { User as UserType } from "@/types/User";
+import { User as UserType } from "@/Types";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";
 

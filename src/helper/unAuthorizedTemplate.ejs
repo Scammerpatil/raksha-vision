@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unauthorized Access Attempt - RakshaVision</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .header img {
+            width: 100px;
+            margin-bottom: 15px;
+        }
+
+        .content {
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .verification-code {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+            padding: 10px;
+            border: 2px dashed #e74c3c;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 12px;
+        }
+
+        .alert {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        .details {
+            margin-top: 20px;
+            background-color: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .unauthorized-img {
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <!-- Original header image -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Indian_Army.svg/1280px-Flag_of_Indian_Army.svg.png"
+                alt="RakshaVision" />
+            <h1>RakshaVision | Real-time surveillance for secure military monitoring.</h1>
+        </div>
+        <div class="content">
+            <h1>Attention Admin,</h1>
+            <h2>Unauthorized Access Attempt Detected!</h2>
+            <p>An unauthorized individual has tried to access the portal. Please review the details below:</p>
+
+            <div class="alert">
+                <strong>Alert:</strong> Unauthorized access attempt detected on the portal.
+            </div>
+
+            <div class="details">
+                <p><strong>IP Address:</strong>
+                    <%= ipAddress %>
+                </p>
+                <p><strong>Attempted Username:</strong>
+                    <%= userName %>
+                </p>
+                <p><strong>Timestamp:</strong>
+                    <%= timestamp %>
+                </p>
+            </div>
+
+            <!-- Unauthorized person's image (base64-encoded) -->
+            <img src="cid:logo" alt="Unauthorized Access Attempt" class="unauthorized-img" />
+
+            <p>If you need any further information, please contact the security team immediately.</p>
+        </div>
+        <div class="footer">
+            <p>Made with ♥ by NovaCops</p>
+            <p>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Indian_Army.svg/1280px-Flag_of_Indian_Army.svg.png"
+                    alt="NovaCops" width="100" />
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

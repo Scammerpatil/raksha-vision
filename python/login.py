@@ -15,6 +15,17 @@ os.environ["PYTHONIOENCODING"] = "utf-8"
 myLocale = locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
 
 ENCODINGS_FILE = "python/encodings.pkl"
+PUBLIC_FOLDER = "public/unauthorized"
+
+def save_image(frame, email):
+    if not os.path.exists(PUBLIC_FOLDER):
+        os.makedirs(PUBLIC_FOLDER)
+    timestamp = time.strftime("%Y%m%d-%H%M%S")
+    filename = f"{email}_unauthorized_{timestamp}.jpg"
+    img_path = os.path.join(PUBLIC_FOLDER, filename)
+    os.makedirs(PUBLIC_FOLDER, exist_ok=True)
+    cv2.imwrite(img_path, frame)
+    return img_path
 
 def load_encodings(file_path):
     if not os.path.exists(file_path):
@@ -48,10 +59,9 @@ def login(email):
 
     current_frame = [None]
     verified_result = {"name": None, "status": "No face detected."}
-    user_verified = False  # Flag to track if the user is verified
+    user_verified = False
 
     def process_frame():
-        # Capture frames only if the user has not been verified
         if not user_verified:
             ret, frame = cam.read()
             if not ret:
@@ -70,7 +80,7 @@ def login(email):
     def verify_face(event=None):
         nonlocal user_verified
         if user_verified:
-            return  # If user is already verified, skip further processing
+            return 
 
         frame = current_frame[0]
         if frame is None:
@@ -91,19 +101,23 @@ def login(email):
                         lbl_status.config(text=f"✅ User Detected: {name}", fg="green")
                         verified_result["name"] = name
                         verified_result["status"] = "User"
-                        user_verified = True  # User is verified, stop further checks
+                        user_verified = True
 
-                        # Check if the email matches the recognized name
                         if verified_result["name"] == email:
                             print("Login Successful")
                         else:
                             print("Login Failed")
                         
-                        finalize_and_close()  # Close the app once verified
+                        finalize_and_close()
 
                     else:
                         lbl_status.config(text="❌ Unknown User Detected", fg="red")
+                        saved_path = save_image(frame[:, :, ::-1], email)
+                        print(saved_path)
+                        verified_result["name"] = "Unknown"
                         verified_result["status"] = "Unknown"
+                        user_verified = True
+                        finalize_and_close()
             except Exception as e:
                 lbl_status.config(text=f"Error in recognition: {e}", fg="orange")
                 verified_result["status"] = f"Error: {e}"
@@ -123,7 +137,7 @@ def login(email):
     root.bind("<S>", verify_face)
     root.protocol("WM_DELETE_WINDOW", on_closing)
 
-    process_frame()  # Start capturing frames
+    process_frame()
     root.mainloop()
 
 

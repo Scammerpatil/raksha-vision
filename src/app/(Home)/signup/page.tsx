@@ -1,5 +1,5 @@
 "use client";
-import { User } from "@/types/Types";
+import { User } from "@/Types";
 import { IconEye, IconEyeOff } from "@tabler/icons-react";
 import axios, { AxiosResponse } from "axios";
 import { useRouter } from "next/navigation";
@@ -77,7 +77,7 @@ const SignUp = () => {
         success: (data: AxiosResponse) => {
           setFormData({
             ...formData,
-            [path]: data.data.secure_url,
+            [path]: data.data.path,
           });
           return "Image Uploaded Successfully";
         },

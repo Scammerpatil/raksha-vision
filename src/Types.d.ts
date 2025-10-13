@@ -1,14 +1,13 @@
-export interface User {
+export interface Soldier {
   _id?: string;
   name: string;
   email: string;
   phone?: string;
   profileImage?: string;
-  password: string;
-  role?: "admin" | "user";
-  otp?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  rank: string;
+  serviceNumber: string;
+  unit: string;
+  dateOfEnlistment: Date;
 }
 
 export interface Detection {

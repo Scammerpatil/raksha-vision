@@ -1,5 +1,5 @@
 import dbConfig from "@/config/db.config";
-import User from "@/models/User";
+import User from "@/models/Soldier";
 import { User as UserType } from "@/Types";
 import jwt from "jsonwebtoken";
 import { NextRequest, NextResponse } from "next/server";

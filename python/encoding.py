@@ -2,7 +2,7 @@ import face_recognition
 import os
 import pickle
 
-IMAGE_DIR = "python/UserImages"
+IMAGE_DIR = "python/Soldier_Images"
 ENCODINGS_FILE = "python/encodings.pkl"
 
 encodings = []

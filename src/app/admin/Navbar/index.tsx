@@ -35,13 +35,20 @@ export default function Navbar() {
             className="menu menu-sm dropdown-content bg-base-200 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             {[
-              { name: "Upload Video", path: "/user/upload", icon: "📤" },
-              { name: "Reports", path: "/user/reports", icon: "📋" },
-              { name: "Settings", path: "/user/settings", icon: "⚙️" },
+              {
+                name: "Manage Soldiers",
+                path: "/admin/manage-soldiers",
+                icon: "👮",
+              },
+              {
+                name: "Live Stream",
+                path: "/admin/live-stream",
+                icon: "📺",
+              },
             ].map((item) => (
               <li key={item.name}>
-                <Link href={item.path} className="btn btn-ghost text-base">
-                  {item.name}
+                <Link href={item.path} className="btn btn-ghost">
+                  {item.icon} {item.name}
                 </Link>
               </li>
             ))}
@@ -63,6 +70,7 @@ export default function Navbar() {
               alt="Avatar"
               className="rounded-full h-12 w-12 object-cover border border-primary"
               role="button"
+              tabIndex={0}
             />
             <ul
               tabIndex={0}
@@ -84,7 +92,7 @@ export default function Navbar() {
               <div className="flex flex-col">
                 <Link
                   className="text-left px-4 py-2 text-base-content hover:bg-base-200 transition duration-200"
-                  href={`/${user.role}/settings`}
+                  href={`/user/settings`}
                 >
                   My Account
                 </Link>

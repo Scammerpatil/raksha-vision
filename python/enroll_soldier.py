@@ -9,7 +9,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 os.environ["PYTHONIOENCODING"] = "utf-8"
 locale.setlocale(category=locale.LC_ALL, locale="en_GB.UTF-8")
 
-IMAGE_DIR = "python/UserImages"
+IMAGE_DIR = "python/Soldier_Images"
 
 def assure_path_exists(path):
     if not os.path.exists(path):
@@ -81,7 +81,7 @@ def enroll(name):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python enroll_resident.py <Resident Name>")
+        print("Usage: python enroll_soldier.py <Soldier Email>")
     else:
         name = sys.argv[1]
         enroll(name)

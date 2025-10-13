@@ -39,9 +39,6 @@ export default function Navbar() {
         <Link href={"/login"} className="btn btn-primary">
           Login
         </Link>
-        <Link href={"/signup"} className="btn btn-secondary">
-          Sign Up
-        </Link>
       </div>
     </div>
   );

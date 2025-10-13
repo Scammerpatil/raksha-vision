@@ -40,6 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-python/UserImages
+python/Soldier_Images
 python/encodings.pkl
 public/detections
+public/unauthorized

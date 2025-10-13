@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     fs.writeFileSync(filePath, Buffer.from(arrayBuffer));
     const { stdout } = await execAsync(
-      `py -3.12 python/detection.py "${filePath}" "${userId}"`
+      `py -3.12 python/detection_1fs.py "${filePath}" "${userId}"`
     );
     const metaDataFile = stdout.trim();
     const data = fs.readFileSync(metaDataFile, "utf-8");

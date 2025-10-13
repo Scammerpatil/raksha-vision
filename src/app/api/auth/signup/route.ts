@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import dbConfig from "@/config/db.config";
+import User from "@/models/Soldier";
 import { exec } from "child_process";
-import User from "@/models/User";
 import { promisify } from "util";
 import bcrypt from "bcryptjs";
 

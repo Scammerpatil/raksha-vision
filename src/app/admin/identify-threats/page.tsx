@@ -1,4 +1,5 @@
 "use client";
+import Title from "@/components/Title";
 import { Detection } from "@/Types";
 import {
   IconCloudUpload,
@@ -38,15 +39,10 @@ export default function UploadPage() {
 
   return (
     <>
-      <div className="bg-base-200 py-8 shadow-sm">
-        <h1 className="text-3xl font-bold text-center text-base-content">
-          🎯 Upload Video for Military Vehicle Detection
-        </h1>
-        <p className="text-center text-base-content/60 mt-2">
-          Detect tanks, trucks, and other military assets automatically
-        </p>
-      </div>
-
+      <Title
+        title="🎯 Upload Video for Military Vehicle Detection"
+        subtitle="Detect tanks, trucks, and other military assets automatically"
+      />
       {/* Upload Card */}
       <div className="bg-base-300/50 backdrop-blur-md p-8 shadow-md max-w-3xl mx-auto rounded-2xl mt-10 border border-base-200">
         <label

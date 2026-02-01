@@ -45,6 +45,16 @@ export default function Navbar() {
                 path: "/admin/live-stream",
                 icon: "📺",
               },
+              {
+                name: "Chat Bot",
+                path: "/admin/chat-bot",
+                icon: "💬",
+              },
+              {
+                name: "Identify Threats",
+                path: "/admin/identify-threats",
+                icon: "⚠️",
+              },
             ].map((item) => (
               <li key={item.name}>
                 <Link href={item.path} className="btn btn-ghost">
@@ -56,7 +66,7 @@ export default function Navbar() {
         </div>
       </div>
       <div className="navbar-center">
-        <Link className="btn btn-ghost text-2xl" href="/user/dashboard">
+        <Link className="btn btn-ghost text-2xl" href="/admin/dashboard">
           <IconMilitaryRank className="inline" />
           RakshaVision
         </Link>

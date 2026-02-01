@@ -2,7 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 const DetectionSchema = new Schema({
   upload_id: { type: String, required: true },
-  uploader_id: { type: Schema.Types.ObjectId, ref: "User", required: true },
   original_video_url: { type: String, required: true },
   detected_video_url: { type: String, required: true },
   detected_events: [

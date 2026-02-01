@@ -113,7 +113,6 @@ def detect_objects(video_path, uploader_id):
     # === Metadata ===
     metadata = {
         "upload_id": upload_id,
-        "uploader_id": uploader_id,
         "original_video_url": original_video_path.replace("\\", "/"),
         "detected_video_url": final_mp4_path.replace("\\", "/"),
         "frame_sample_rate": "1 frame per second",

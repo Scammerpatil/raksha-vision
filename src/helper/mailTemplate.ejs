@@ -1,61 +1,83 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verify Your RakshaVision App</title>
+  <meta charset="UTF-8" />
+  <title>Detection Intelligence Report - RakshaVision</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: #f4f6f8;
       margin: 0;
       padding: 0;
-      background-color: #f8f9fa;
     }
 
     .container {
-      width: 100%;
-      max-width: 600px;
+      max-width: 700px;
       margin: auto;
-      background-color: #ffffff;
+      background: #ffffff;
       border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     }
 
     .header {
-      background-color: #2c3e50;
-      padding: 20px;
+      background: #1f2a36;
+      color: #fff;
       text-align: center;
-      color: white;
-    }
-
-    .header img {
-      width: 100px;
-      margin-bottom: 15px;
+      padding: 20px;
     }
 
     .content {
       padding: 20px;
       color: #333;
-      line-height: 1.6;
     }
 
-    .verification-code {
-      font-size: 24px;
-      font-weight: bold;
-      color: #e74c3c;
-      padding: 10px;
-      border: 2px dashed #e74c3c;
+    .badge {
       display: inline-block;
+      background: #0d6efd;
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-right: 6px;
+    }
+
+    .summary {
+      background: #f1f3f5;
+      padding: 15px;
+      border-radius: 6px;
       margin: 20px 0;
     }
 
-    .footer {
-      padding: 20px;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border: 1px solid #dee2e6;
+      padding: 8px;
       text-align: center;
-      color: #777;
+    }
+
+    th {
+      background: #e9ecef;
+    }
+
+    .footer {
+      text-align: center;
       font-size: 12px;
+      color: #777;
+      padding: 20px;
+    }
+
+    img.preview {
+      width: 120px;
+      border-radius: 6px;
     }
   </style>
 </head>
@@ -63,33 +85,78 @@
 <body>
   <div class="container">
     <div class="header">
-      <img
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Indian_Army.svg/1280px-Flag_of_Indian_Army.svg.png" />
-      <h1>RakshaVision | Real-time surveillance for secure military monitoring.</h1>
+      <h1>RakshaVision</h1>
+      <p>AI-Powered Tactical Asset Intelligence</p>
     </div>
+
     <div class="content">
-      <h1>Hello,<%= name%>!!
-      </h1>
-      <h2>Your Verification Code</h2>
-      <p>
-        Please use the verification code below to complete your registration
-        or sign in.
+      <h2>Detection Intelligence Report</h2>
+
+      <p><strong>Upload ID:</strong>
+        <%= upload_id %>
       </p>
-      <div class="verification-code">
-        <%= token %>
+      <p><strong>Processed At:</strong>
+        <%= processed_at %>
+      </p>
+
+      <div class="summary">
+        <p><strong>Total Events:</strong>
+          <%= summary.total_events %>
+        </p>
+        <p>
+          <% Object.keys(summary.classes).forEach(cls=> { %>
+            <span class="badge">
+              <%= cls %>: <%= summary.classes[cls] %>
+            </span>
+            <% }) %>
+        </p>
       </div>
-      <p>If you didn't request this, please ignore this email.</p>
-      <p>
-        Thank you for choosing RakshaVision. We appreciate your trust in our
-        services!
+
+      <h3>Detected Events</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Confidence</th>
+            <th>First Seen (s)</th>
+            <th>Frame</th>
+            <th>Preview</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% detected_events.forEach(e=> { %>
+            <tr>
+              <td>
+                <%= e.class %>
+              </td>
+              <td>
+                <%= (e.confidence * 100).toFixed(2) %>%
+              </td>
+              <td>
+                <%= e.first_seen %>
+              </td>
+              <td>
+                <%= e.frame_indices[0] %>
+              </td>
+              <td>
+                <img src="<%= baseUrl %>/<%= e.best_frame_url.replace('public/', '') %>" class="preview" />
+              </td>
+            </tr>
+            <% }) %>
+        </tbody>
+      </table>
+
+      <p style="margin-top:20px;">
+        <strong>Detected Video:</strong><br />
+        <a href="<%= baseUrl %>/<%= detected_video_url.replace('public/', '') %>">
+          View Processed Video
+        </a>
       </p>
     </div>
+
     <div class="footer">
       <p>Made with ♥ by NovaCops</p>
-      <p>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Flag_of_Indian_Army.svg/1280px-Flag_of_Indian_Army.svg.png"
-          alt="NovaCops" width="100" />
+      <p>RakshaVision © <%= new Date().getFullYear() %>
       </p>
     </div>
   </div>

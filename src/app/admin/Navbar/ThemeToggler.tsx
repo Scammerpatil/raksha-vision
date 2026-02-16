@@ -1,7 +1,10 @@
 import { IconChevronDown, IconSun } from "@tabler/icons-react";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const ThemeToggler = () => {
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const themes = [
     "light",
     "dark",
@@ -35,13 +38,25 @@ const ThemeToggler = () => {
     "dim",
     "nord",
     "sunset",
-  ];
-
-  themes.sort();
+  ].sort();
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem("theme") || "baseTheme";
+    const storedTheme = localStorage.getItem("theme") || "light";
     applyTheme(storedTheme);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const applyTheme = (theme: string) => {
@@ -49,37 +64,35 @@ const ThemeToggler = () => {
     localStorage.setItem("theme", theme);
   };
 
-  const handleThemeChange = (theme: string) => {
-    applyTheme(theme);
-  };
-
   return (
-    <div className="dropdown dropdown-end">
-      <div
-        tabIndex={0}
-        role="button"
-        className={`btn btn-primary text-primary-content flex items-center gap-2`}
+    <div ref={dropdownRef} className="relative">
+      <button
+        onClick={() => setOpen((prev) => !prev)}
+        className="btn btn-primary flex items-center gap-2"
       >
         <IconSun />
         <IconChevronDown />
-      </div>
-      <ul
-        tabIndex={0}
-        className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 overflow-y-auto block h-80 shadow-2xl text-base-content"
-      >
-        {themes.map((theme) => (
-          <li key={theme}>
-            <input
-              type="radio"
-              name="theme-dropdown"
-              aria-label={theme}
-              value={theme}
-              onChange={() => handleThemeChange(theme)}
-              className="theme-controller btn btn-sm btn-block btn-ghost justify-start capitalize"
-            />
-          </li>
-        ))}
-      </ul>
+      </button>
+
+      {open && (
+        <ul className="absolute right-0 mt-2 menu bg-base-100 rounded-box z-50 w-52 p-2 h-80 overflow-y-auto shadow-2xl">
+          <div>
+            {themes.map((theme) => (
+              <li key={theme}>
+                <button
+                  onClick={() => {
+                    applyTheme(theme);
+                    setOpen(false);
+                  }}
+                  className="btn btn-sm btn-ghost justify-start capitalize w-full"
+                >
+                  {theme}
+                </button>
+              </li>
+            ))}
+          </div>
+        </ul>
+      )}
     </div>
   );
 };

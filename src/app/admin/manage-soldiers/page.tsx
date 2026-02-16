@@ -17,6 +17,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function ManageSoldiers() {
   const [soldiers, setSoldiers] = useState<Soldier[]>([]);
+  const [editingSoldier, setEditingSoldier] = useState<Soldier | null>(null);
   const [newSoldier, setNewSoldier] = useState({
     name: "",
     email: "",
@@ -107,7 +108,7 @@ export default function ManageSoldiers() {
           !newSoldier.unit ? " Unit," : ""
         }${!newSoldier.serviceNumber ? " Service Number," : ""}${
           !newSoldier.profileImage ? " Profile Image" : ""
-        }`
+        }`,
       );
       return;
     }
@@ -127,6 +128,29 @@ export default function ManageSoldiers() {
     } catch (error) {
       console.log(error);
       toast.error("Failed to add soldier");
+    }
+  };
+
+  const handleUpdateSoldier = async () => {
+    if (!editingSoldier) return;
+
+    try {
+      const res = axios.put("/api/soldiers/update", editingSoldier);
+
+      toast.promise(res, {
+        loading: "Updating Soldier...",
+        success: () => {
+          (
+            document.getElementById("edit-soldier-modal") as HTMLDialogElement
+          ).close();
+          fetchSoldiers();
+          return "Soldier Updated Successfully";
+        },
+        error: "Failed to update soldier",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to update soldier");
     }
   };
 
@@ -221,7 +245,17 @@ export default function ManageSoldiers() {
                   <td>{soldier.unit}</td>
                   <td>{soldier.phone}</td>
                   <td className="space-x-3">
-                    <button className="btn btn-secondary">
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => {
+                        setEditingSoldier(soldier);
+                        (
+                          document.getElementById(
+                            "edit-soldier-modal",
+                          ) as HTMLDialogElement
+                        ).showModal();
+                      }}
+                    >
                       <IconEdit size={16} className="mr-2" />
                       Edit
                     </button>
@@ -245,7 +279,7 @@ export default function ManageSoldiers() {
         className="modal bg-base-100/70 backdrop-blur-lg opacity-100"
       >
         <Toaster />
-        <div className="modal-box w-11/12 max-w-5xl bg-base-100 backdrop-blur-lg Orbitron">
+        <div className="modal-box w-11/12 max-w-3xl bg-base-100">
           <h3 className="font-bold text-2xl text-primary text-center py-2">
             Add New Soldier
           </h3>
@@ -355,7 +389,8 @@ export default function ManageSoldiers() {
               {/* Soldier Service Number */}
               <fieldset className="fieldset">
                 <legend className="fieldset-legend">
-                  Soldier Service Number <span className="text-error">*</span>{" "}
+                  Soldier Service Number{" "}
+                  <span className="text-error">*</span>{" "}
                 </legend>
                 <input
                   type="text"
@@ -444,12 +479,169 @@ export default function ManageSoldiers() {
               onClick={() => {
                 (
                   document.getElementById(
-                    "add-Soldier-modal"
+                    "add-Soldier-modal",
                   ) as HTMLDialogElement
                 ).close();
               }}
             >
               <IconCancel size={16} className="mr-2" />
+              Cancel
+            </button>
+          </div>
+        </div>
+      </dialog>
+      <dialog
+        id="edit-soldier-modal"
+        className="modal bg-base-100/70 backdrop-blur-lg opacity-100"
+      >
+        <Toaster />
+        <div className="modal-box w-11/12 max-w-3xl bg-base-100">
+          <h3 className="font-bold text-2xl text-primary text-center py-2">
+            Edit Soldier
+          </h3>
+
+          {editingSoldier && (
+            <div className="px-10 py-5 mx-auto bg-base-200 rounded-lg">
+              <h1 className="border-b text-lg font-bold mb-4">
+                Soldier Details
+              </h1>
+              <div className="grid grid-cols-2 gap-4 my-4">
+                {/* Soldier Name */}
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">
+                    Soldier Name <span className="text-error">*</span>{" "}
+                  </legend>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    placeholder="Enter the Soldier name"
+                    value={editingSoldier?.name}
+                    onChange={(e) =>
+                      setEditingSoldier({
+                        ...editingSoldier!,
+                        name: e.target.value,
+                      })
+                    }
+                  />
+                </fieldset>
+                {/* Soldier Email */}
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">
+                    Soldier Email <span className="text-error">*</span>{" "}
+                  </legend>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    placeholder="Enter the Soldier email"
+                    value={editingSoldier?.email}
+                    disabled
+                    readOnly
+                  />
+                </fieldset>
+                {/* Soldier Phone */}
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">
+                    Soldier Phone <span className="text-error">*</span>{" "}
+                  </legend>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    placeholder="Enter the Soldier phone"
+                    value={editingSoldier?.phone}
+                    onChange={(e) =>
+                      setEditingSoldier({
+                        ...editingSoldier!,
+                        phone:
+                          e.target.value.length <= 10
+                            ? e.target.value
+                            : editingSoldier!.phone,
+                      })
+                    }
+                  />
+                </fieldset>
+                {/* Soldier Rank */}
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">
+                    Soldier Rank <span className="text-error">*</span>{" "}
+                  </legend>
+                  <select
+                    name="rank"
+                    className="select select-bordered w-full"
+                    value={editingSoldier?.rank}
+                    onChange={(e) =>
+                      setEditingSoldier({
+                        ...editingSoldier!,
+                        rank: e.target.value,
+                      })
+                    }
+                  >
+                    <option defaultChecked value="">
+                      Select Rank
+                    </option>
+                    <option value="Private">Private</option>
+                    <option value="Corporal">Corporal</option>
+                    <option value="Sergeant">Sergeant</option>
+                    <option value="Lieutenant">Lieutenant</option>
+                    <option value="Captain">Captain</option>
+                    <option value="Major">Major</option>
+                    <option value="Colonel">Colonel</option>
+                    <option value="General">General</option>
+                  </select>
+                </fieldset>
+                {/* Soldier Unit */}
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">
+                    Soldier Unit <span className="text-error">*</span>{" "}
+                  </legend>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    placeholder="Enter the Soldier unit"
+                    value={editingSoldier?.unit}
+                    onChange={(e) =>
+                      setEditingSoldier({
+                        ...editingSoldier!,
+                        unit:
+                          e.target.value.charAt(0).toUpperCase() +
+                          e.target.value.slice(1),
+                      })
+                    }
+                  />
+                </fieldset>
+                {/* Soldier Service Number */}
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">
+                    Soldier Service Number{" "}
+                    <span className="text-error">*</span>{" "}
+                  </legend>
+                  <input
+                    type="text"
+                    className="input input-bordered w-full"
+                    placeholder="Enter the Soldier service number"
+                    value={editingSoldier?.serviceNumber}
+                    readOnly
+                    disabled
+                  />
+                </fieldset>
+              </div>
+            </div>
+          )}
+
+          <div className="flex justify-center gap-4 mt-6">
+            <button className="btn btn-primary" onClick={handleUpdateSoldier}>
+              Save Changes
+            </button>
+
+            <button
+              className="btn btn-error btn-outline"
+              onClick={() =>
+                (
+                  document.getElementById(
+                    "edit-soldier-modal",
+                  ) as HTMLDialogElement
+                ).close()
+              }
+            >
               Cancel
             </button>
           </div>

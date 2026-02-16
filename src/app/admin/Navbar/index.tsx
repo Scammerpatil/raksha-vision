@@ -24,7 +24,7 @@ export default function Navbar() {
   };
   if (!user) return <Loading />;
   return (
-    <div className="navbar bg-base-300 lg:px-10 h-5">
+    <div className="navbar bg-base-300 lg:px-10">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
@@ -32,7 +32,7 @@ export default function Navbar() {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-200 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            className="menu menu-sm dropdown-content bg-base-200 rounded-box z-50 mt-3 w-52 p-2 shadow"
           >
             {[
               {

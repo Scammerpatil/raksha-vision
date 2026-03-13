@@ -7,6 +7,7 @@ import path from "path";
 import fs from "fs";
 import Detection from "@/models/Detection";
 import { sendDetectionReportEmail } from "@/config/sendDetectionMail";
+import EmailCount from "@/models/EmailCount";
 
 dbConfig();
 
@@ -36,20 +37,29 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     fs.writeFileSync(filePath, Buffer.from(arrayBuffer));
     const { stdout } = await execAsync(
-      `py -3.12 python/detection_1fs.py "${filePath}" "${userId}"`,
+      `py -3.12 python/detection_1fs.py "${filePath}" "${userId}"`
     );
     const metaDataFile = stdout.trim();
     const data = fs.readFileSync(metaDataFile, "utf-8");
     const result = JSON.parse(data);
     const newDetection = new Detection(result);
     await sendDetectionReportEmail(result);
+    let record = await EmailCount.findOne();
+    if (!record) {
+      record = await EmailCount.create({
+        vehicle_detection_email: 1,
+      });
+    } else {
+      record.vehicle_detection_email += 1;
+      await record.save();
+    }
     await newDetection.save();
     return NextResponse.json({ result });
   } catch (error) {
     console.log("Error in detection route:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

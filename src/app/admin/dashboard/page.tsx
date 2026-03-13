@@ -35,6 +35,8 @@ export default function DashboardPage() {
     totalSoldiers: 0,
     soldiersByRank: {},
     soldiersByUnit: {},
+    unidentifiedEmailCount: 0,
+    vehicleEmailCount: 0,
   });
 
   useEffect(() => {
@@ -77,6 +79,20 @@ export default function DashboardPage() {
       color: "text-success",
       desc: "Registered personnel",
     },
+    {
+      label: "Unauthorized Soldier Emails",
+      value: stats.unidentifiedEmailCount,
+      icon: IconLockAccess,
+      color: "text-error",
+      desc: "Security alerts sent",
+    },
+    {
+      label: "Vehicle Alert Emails",
+      value: stats.vehicleEmailCount,
+      icon: IconCar,
+      color: "text-warning",
+      desc: "Vehicle alerts sent",
+    },
   ];
 
   const pieData = Object.entries(stats.classes).map(([key, value]) => ({
@@ -88,14 +104,14 @@ export default function DashboardPage() {
     ([key, value]) => ({
       name: key,
       value,
-    }),
+    })
   );
 
   const soldierUnitPie = Object.entries(stats.soldiersByUnit).map(
     ([key, value]) => ({
       name: key,
       value,
-    }),
+    })
   );
 
   return (

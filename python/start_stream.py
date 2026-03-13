@@ -5,6 +5,7 @@ import pickle
 import os
 import smtplib
 import time
+import requests
 from email.message import EmailMessage
 from email.utils import make_msgid
 from PIL import Image, ImageTk
@@ -204,6 +205,7 @@ def start_raksha_vision():
                     saved_path, saved_ts = save_unknown_face(frame)
                     print(f"[ALERT] Unknown detected → {saved_path}")
                     send_alert_email(saved_path, saved_ts)
+                    notify_backend()
 
         img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         imgtk = ImageTk.PhotoImage(image=img)
@@ -221,6 +223,20 @@ def start_raksha_vision():
 
     update_frame()
     root.mainloop()
+
+def notify_backend():
+    try:
+        url = "http://localhost:3000/api/security/email-alert"
+
+        response = requests.post(url)
+
+        if response.status_code == 200:
+            print("[BACKEND] Email count updated")
+        else:
+            print("[BACKEND ERROR]", response.text)
+
+    except Exception as e:
+        print("[BACKEND CONNECTION ERROR]", e)
 
 # ==== RUN ====
 if __name__ == "__main__":

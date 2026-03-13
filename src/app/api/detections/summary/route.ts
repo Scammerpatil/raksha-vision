@@ -3,6 +3,7 @@ import Detection from "@/models/Detection";
 import Soldier from "@/models/Soldier";
 import dbConfig from "@/config/db.config";
 import jwt from "jsonwebtoken";
+import EmailCount from "@/models/EmailCount";
 
 dbConfig();
 
@@ -62,6 +63,12 @@ export async function GET(req: NextRequest) {
     });
 
     // =======================
+    // EMAIL COUNT
+    // =======================
+
+    const emailStats = await EmailCount.findOne();
+
+    // =======================
     // RESPONSE
     // =======================
     return NextResponse.json({
@@ -76,12 +83,14 @@ export async function GET(req: NextRequest) {
       totalSoldiers: soldiers.length,
       soldiersByRank,
       soldiersByUnit,
+      unidentifiedEmailCount: emailStats?.unidentified_user_email || 0,
+      vehicleEmailCount: emailStats?.vehicle_detection_email || 0,
     });
   } catch (error) {
     console.error("Dashboard summary error:", error);
     return NextResponse.json(
       { error: "Failed to fetch dashboard summary" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

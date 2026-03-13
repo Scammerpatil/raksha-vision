@@ -2,6 +2,7 @@
 
 import Title from "@/components/Title";
 import { Detection } from "@/Types";
+import { sendBrowserNotification } from "@/utils/browserNotification";
 import {
   IconCloudUpload,
   IconFile,
@@ -36,6 +37,10 @@ export default function UploadPage() {
         loading: "Analyzing tactical feed...",
         success: (data) => {
           setResult(data.data.result);
+          sendBrowserNotification(
+            "Email Sent",
+            "Email sent successfully. Please check your inbox."
+          );
           return "Intelligence report generated!";
         },
         error: "Signal lost. Error processing file.",
@@ -158,7 +163,7 @@ export default function UploadPage() {
                             {count}
                           </span>
                         </div>
-                      ),
+                      )
                     )}
                   </div>
                 </div>
@@ -211,7 +216,7 @@ export default function UploadPage() {
                           className="relative inline-block cursor-zoom-in group"
                           onClick={() => {
                             setSelectedImg(
-                              `/${e.best_frame_url.replace("public/", "")}`,
+                              `/${e.best_frame_url.replace("public/", "")}`
                             );
                             setZoom(1);
                             dialogRef.current?.showModal();
